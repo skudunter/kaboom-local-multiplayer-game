@@ -27,8 +27,8 @@ let levels = {
       pos: k.vec2(tileWidth/2, tileHeight/2),
       tiles: {
         "=": () => [k.sprite("wall")],
-        "@": () => player("robot"),
-        "#": () => player("robot"),
+        "@": () => player("robot1"),
+        "#": () => player("robot2"),
         " ": () => [k.sprite("floor1"),k.anchor('center')],
       },
     },
