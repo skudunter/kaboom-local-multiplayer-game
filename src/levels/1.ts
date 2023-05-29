@@ -11,11 +11,23 @@ function handleHit(player: any) {
 // Function to handle player movement and animation
 function handlePlayerMovement(player: any, direction: any, anim: any) {
   k.onKeyDown(direction, () => {
+    player.flipX = anim.flipX;    
+    if (player.pos.x < tileWidth/2+5) {
+      player.pos.x = 0; // Restrict movement to the left
+    }
+    if (player.pos.x > k.width()) {
+      player.pos.x = k.width(); // Restrict movement to the right
+    }
+    if (player.pos.y < 0) {
+      player.pos.y = 0; // Restrict movement upwards
+    }
+    if (player.pos.y > k.height()) {
+      player.pos.y = k.height(); // Restrict movement downwards
+    }
     player.move(anim.x * player.speed, anim.y * player.speed);
     if (player.curAnim() !== "run") {
       player.play("run");
     }
-    player.flipX = anim.flipX;
   });
 }
 
@@ -32,8 +44,8 @@ function handlePlayerIdleAnimation(player: any) {
 const level1 = k.scene("level1", () => {
   const level = k.addLevel(
     [
-      "==============================",
-      "=                            =",
+      "=========================",
+      "=                         =",
       "=                            =",
       "=                            =",
       "=                            =",
@@ -55,7 +67,7 @@ const level1 = k.scene("level1", () => {
       tileHeight: tileHeight,
       pos: k.vec2(tileWidth / 2, tileHeight / 2),
       tiles: {
-        "=": () => [k.sprite("wall"), k.anchor("center"), k.body(), k.area()],
+        "=": () => [k.sprite("wall"), k.anchor("center"), k.area(),k.scale(5.1)],
         "@": () => [
           k.sprite("robot1"),
           k.area(),
@@ -78,7 +90,7 @@ const level1 = k.scene("level1", () => {
           k.z(100),
           k.health(10),
         ],
-        " ": () => [k.sprite("floor1"), k.anchor("center")],
+        " ": () => [k.sprite("floor1"), k.anchor("center"),k.scale(5.1)],
       },
     }
   );
