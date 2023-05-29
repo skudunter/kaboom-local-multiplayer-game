@@ -1,22 +1,25 @@
 import k from "./constants";
-import Player from "./player";
+import levels from "./levels";
 
-//main player object
-const player = new Player(100,200);
+// load the level
+let level = k.addLevel(levels.level1.map, levels.level1.data);
 
-// keyDown handlers for movement
+//main player1 object
+let player = level.get("robot")[0];
+
+//keyDown handlers for movement
 k.onKeyDown("left", () => {
-    player.move("left");
-  });
-  
-  k.onKeyDown("right", () => {
-    player.move("right");
-  });
-  
-  k.onKeyDown("up", () => {
-    player.move("up");
-  });
-  
-  k.onKeyDown("down", () => {
-    player.move("down");
-  });
+  player.move("left");
+});
+
+k.onKeyDown("right", () => {
+  player.move("right");
+});
+
+k.onKeyDown("up", () => {
+  player.move("up");
+});
+
+k.onKeyDown("down", () => {
+  player.move("down");
+});
