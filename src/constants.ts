@@ -1,19 +1,25 @@
 import kaboom from "kaboom";
 //init kaboom
 const k = kaboom();
-const tileWidth = k.width() / 34.8;
+const tileWidth = k.width() / 30;
 const tileHeight = tileWidth;
 
 //load sprites
 k.loadSprite("robot1", "./robot1.png", {
-  sliceX: 8,
-  anims: {
-    run: {
-      from: 0,
-      to: 7,
-      speed: 10,
-      loop: false,
-    },
+    sliceX: 12,
+    anims: {
+      idle: {
+        from: 0,
+        to: 4,
+        speed: 10,
+        loop: true,
+      },
+      run: {
+        from: 5,
+        to: 11,
+        speed: 10,
+        loop: false,
+      },
   },
 });
 k.loadSprite("robot2", "./robot2.png", {
