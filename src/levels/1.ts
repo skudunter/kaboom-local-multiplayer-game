@@ -1,5 +1,13 @@
 import k, { tileWidth, tileHeight } from "../constants";
 
+function handleHit(player: any) {
+  let t = 0;
+  player.on("hurt", () => {
+    player.color = { r: 255, g: 255, b: 255 };
+    console.log("hurts");
+  });
+}
+
 // Function to handle player movement and animation
 function handlePlayerMovement(player: any, direction: any, anim: any) {
   k.onKeyDown(direction, () => {
@@ -57,6 +65,7 @@ const level1 = k.scene("level1", () => {
           { speed: 300 },
           k.scale(4),
           k.z(100),
+          k.health(10),
         ],
         "#": () => [
           k.sprite("robot2"),
@@ -67,6 +76,7 @@ const level1 = k.scene("level1", () => {
           "robot2",
           { speed: 300 },
           k.z(100),
+          k.health(10),
         ],
         " ": () => [k.sprite("floor1"), k.anchor("center")],
       },
@@ -78,6 +88,11 @@ const level1 = k.scene("level1", () => {
 
   handlePlayerIdleAnimation(player1);
   handlePlayerIdleAnimation(player2);
+
+  handleHit(player1);
+  handleHit(player2);
+
+  player2.hurt(3);
 
   handlePlayerMovement(player1, "left", {
     x: -1,
