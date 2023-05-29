@@ -1,5 +1,3 @@
-import kaboom from "kaboom";
+import k from "./constants";
 
-const k = kaboom();
-
-k.add([k.pos(100, 100), k.rect(50, 50)]);
+let player = k.add([k.pos(100, 100), k.rect(50, 50)]);
