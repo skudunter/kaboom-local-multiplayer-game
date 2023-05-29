@@ -11,19 +11,7 @@ function handleHit(player: any) {
 // Function to handle player movement and animation
 function handlePlayerMovement(player: any, direction: any, anim: any) {
   k.onKeyDown(direction, () => {
-    player.flipX = anim.flipX;    
-    if (player.pos.x < tileWidth/2+5) {
-      player.pos.x = 0; // Restrict movement to the left
-    }
-    if (player.pos.x > k.width()) {
-      player.pos.x = k.width(); // Restrict movement to the right
-    }
-    if (player.pos.y < 0) {
-      player.pos.y = 0; // Restrict movement upwards
-    }
-    if (player.pos.y > k.height()) {
-      player.pos.y = k.height(); // Restrict movement downwards
-    }
+    player.flipX = anim.flipX;
     player.move(anim.x * player.speed, anim.y * player.speed);
     if (player.curAnim() !== "run") {
       player.play("run");
@@ -45,21 +33,16 @@ const level1 = k.scene("level1", () => {
   const level = k.addLevel(
     [
       "=========================",
-      "=                         =",
-      "=                            =",
-      "=                            =",
-      "=                            =",
-      "=                            =",
-      "=                            =",
-      "=#                          @ =",
-      "=                            =",
-      "=                            =",
-      "=                            =",
-      "=                            =",
-      "=                            =",
-      "=                            =",
-      "=                            =",
-      "=                            =",
+      "=                       =",
+      "=                       =",
+      "=                       =",
+      "=                       =",
+      "=                       =",
+      "=                       =",
+      "= #                    @=",
+      "=                       =",
+      "=                       =",
+      "=                       =",
       "===================================",
     ],
     {
@@ -67,7 +50,7 @@ const level1 = k.scene("level1", () => {
       tileHeight: tileHeight,
       pos: k.vec2(tileWidth / 2, tileHeight / 2),
       tiles: {
-        "=": () => [k.sprite("wall"), k.anchor("center"), k.area(),k.scale(5.1)],
+        "=": () => [k.sprite("wall"), k.anchor("center"), k.scale(5.1)],
         "@": () => [
           k.sprite("robot1"),
           k.area(),
@@ -90,10 +73,14 @@ const level1 = k.scene("level1", () => {
           k.z(100),
           k.health(10),
         ],
-        " ": () => [k.sprite("floor1"), k.anchor("center"),k.scale(5.1)],
+        " ": () => [k.sprite("floor1"), k.anchor("center"), k.scale(5.1)],
       },
     }
   );
+  k.add([k.rect(k.width(), tileWidth), k.pos(0, 0), k.color(0, 0, 0),k.body({isStatic:true}),k.area(),k.z(-1)]);
+  k.add([k.rect(tileWidth,k.height()-tileHeight*2-20), k.pos(0, tileHeight+1), k.color(0, 0, 0),k.body({isStatic:true}),k.area(),k.z(-1)]);
+  k.add([k.rect(k.width(), tileHeight), k.pos(0, k.height()-tileHeight-16), k.color(0, 0, 0),k.body({isStatic:true}),k.area(),k.z(-1)]);
+  k.add([k.rect(tileWidth,k.height()-tileHeight*2-20), k.pos(k.width()-tileWidth, tileHeight+1), k.color(0, 0, 0),k.body({isStatic:true}),k.area(),k.z(-1)]);
 
   const player1 = level.get("robot1")[0];
   const player2 = level.get("robot2")[0];
