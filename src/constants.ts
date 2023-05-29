@@ -45,7 +45,6 @@ k.loadSprite("floor1", "./floor1.png");
 k.loadSprite("floor2", "./floor2.png");
 k.loadSprite("floor3", "./floor3.png");
 k.loadSprite("floor4", "./floor4.png");
-k.loadSprite("floor5", "./floor5.png");
 //crates
 k.loadSprite("crate1", "./crate1.png");
 k.loadSprite("crate2", "./crate2.png");

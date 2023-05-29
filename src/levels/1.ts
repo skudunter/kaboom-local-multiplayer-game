@@ -33,17 +33,17 @@ const level1 = k.scene("level1", () => {
   const level = k.addLevel(
     [
       "=========================",
+      "=                p      =",
+      "=          cc    p      =",
+      "=                p      =",
+      "=  p        p           =",
+      "=# p       c           @=",
+      "=  p        p           =",
       "=                       =",
-      "=                       =",
-      "=                       =",
-      "=                       =",
-      "=#         c           @=",
-      "=                       =",
-      "=                       =",
-      "=                       =",
-      "=                       =",
-      "= bf                    =",
-      "===================================",
+      "=      pp               =",
+      "=       p               =",
+      "=       p               =",
+      "==========================",
     ],
     {
       tileWidth: tileWidth,
@@ -57,7 +57,7 @@ const level1 = k.scene("level1", () => {
           k.body(),
           k.anchor("center"),
           "robot1",
-          { speed: 300 },
+          { speed: 200 },
           k.scale(4),
           k.z(100),
           k.health(10),
@@ -69,7 +69,7 @@ const level1 = k.scene("level1", () => {
           k.scale(4),
           k.anchor("center"),
           "robot2",
-          { speed: 300 },
+          { speed: 200 },
           k.z(100),
           k.health(10),
         ],
@@ -77,6 +77,7 @@ const level1 = k.scene("level1", () => {
         "b": () => [k.sprite("floor1"), k.anchor("center"), k.scale(5.1)],
         "f": () => [k.sprite("floor2"), k.anchor("center"), k.scale(5.1)],
         "c": () => [k.sprite("crate1"), k.anchor("center"), k.scale(5.1),k.body({mass:10}),k.area(),k.z(100)],
+        "p": () => [k.sprite("pillar1"), k.anchor("center"), k.scale(5.1),k.body({isStatic:true}),k.area(),k.z(100)],
       },
     }
   );
@@ -89,8 +90,9 @@ const level1 = k.scene("level1", () => {
   const player1 = level.get("robot1")[0];
   const player2 = level.get("robot2")[0];
  
-  k.add([k.sprite('floor5'),k.pos(player1.pos.x,player1.pos.y),k.scale(5.1),k.z(-1)])
-  k.add([k.sprite('floor5'),k.pos(player2.pos.x,player2.pos.y),k.scale(5.1),k.z(-1)])
+  k.add([k.sprite('light'),k.pos(player1.pos.x,player1.pos.y),k.scale(5.1),k.z(-1)])
+  k.add([k.sprite('light'),k.pos(player2.pos.x,player2.pos.y),k.scale(5.1),k.z(-1)])
+
   handlePlayerIdleAnimation(player1);
   handlePlayerIdleAnimation(player2);
 
