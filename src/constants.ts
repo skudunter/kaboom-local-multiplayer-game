@@ -40,13 +40,23 @@ k.loadSprite("robot2", "./robot2.png", {
   },
 });
 
+//floors
 k.loadSprite("floor1", "./floor1.png");
-k.loadSprite("crate1", "./crate1.png");
 k.loadSprite("floor2", "./floor2.png");
 k.loadSprite("floor3", "./floor3.png");
 k.loadSprite("floor4", "./floor4.png");
 k.loadSprite("floor5", "./floor5.png");
+//crates
+k.loadSprite("crate1", "./crate1.png");
+k.loadSprite("crate2", "./crate2.png");
+//wall
 k.loadSprite("wall", "./wall.png");
+//pillars
+k.loadSprite("pillar1", "./pillar1.png");
+k.loadSprite("pillar2", "./pillar2.png");
+//light
+k.loadSprite("light", "./light.png");
+
 
 export default k;
 export { tileWidth, tileHeight };
