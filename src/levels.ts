@@ -1,25 +1,24 @@
-import k from "./constants";
+import k, { tileWidth, tileHeight } from "./constants";
 import player from "./player";
-
 let levels = {
   level1: {
     map: [
       "============",
       "=               =",
       "=               =",
-      "=@               $=",
+      "=   @               $=",
       "=               =",
       "=               =",
       "==========",
     ],
     data: {
-      tileWidth: 32,
-      tileHeight: 32,
+      tileWidth: tileWidth,
+      tileHeight: tileHeight,
       pos: k.vec2(0, 0),
       tiles: {
-        "=": () => [k.rect(20, 10)],
-        "@": () => [player("robot")],
-        "#": () => [player("zombie")],
+        "=": () => [k.rect(tileWidth, tileHeight)],
+        "@": () => player("robot"),
+        "#": () => player("robot"),
       },
     },
   },

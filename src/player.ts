@@ -1,9 +1,9 @@
 import k from "./constants";
 function player(type: string) {
   if (type === "robot") {
-    return k.add([k.sprite("robot"), k.area(), "robot"]);
+    return [k.sprite("robot")];
   } else {
-    return k.add([k.sprite("robot"), k.area(), "zombie"]);
+    return [k.sprite('zombie')]
   }
 }
 export default player;
