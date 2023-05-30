@@ -26,11 +26,11 @@ const level1 = k.scene("level1", () => {
     [
       "=========================",
       "=                p      =",
-      "=          cc    p      =",
       "=                p      =",
+      "=          cc    p      =",
       "=  p        P           =",
       "=# p                   @=",
-      "=  p        P   p       =",
+      "=  p            p       =",
       "=               p       =",
       "=      pp       p       =",
       "=       p               =",
@@ -65,7 +65,12 @@ const level1 = k.scene("level1", () => {
           k.z(100),
           k.health(100),
         ],
-        " ": () => [k.sprite("floor3"), k.anchor("center"), k.scale(5.1)],
+        " ": () => [
+          k.sprite("floor3"),
+          k.anchor("center"),
+          k.scale(5.1),
+          k.z(-2),
+        ],
         b: () => [k.sprite("floor1"), k.anchor("center"), k.scale(5.1)],
         f: () => [k.sprite("floor2"), k.anchor("center"), k.scale(5.1)],
         c: () => [
@@ -98,15 +103,15 @@ const level1 = k.scene("level1", () => {
     }
   );
 
-  // k.play("gametrack");
+  k.play("gametrack");
   let scores = { score1: 0, score2: 0 };
   let score1 = k.add([
     k.text(`player1: ${scores.score1}`),
-    k.pos(k.width() / 2 - 150, 20),
+    k.pos(k.width() / 2 + 150, 20),
   ]);
   let score2 = k.add([
     k.text(`player2: ${scores.score2}`),
-    k.pos(k.width() / 2 + 150, 20),
+    k.pos(k.width() / 2 - 150, 20),
   ]);
 
   //walls for collision purposes
@@ -153,6 +158,7 @@ const level1 = k.scene("level1", () => {
     player1: player1.pos,
     player2: player2.pos,
   };
+
   let player1Health = player1.add([
     k.rect(k.lerp(0, tileWidth / 3, player1.hp() / 100), 3),
     k.pos(0, -18),
@@ -186,10 +192,9 @@ const level1 = k.scene("level1", () => {
 
   k.onKeyPress("7", () => {
     //player 1 shoot
-    //
     let bullet: any = [
       k.move(player1.pos.angle(player2.pos), -900),
-      k.pos(player1.pos),
+      k.pos(player1.pos.x+5,player1.pos.y+20),
       k.sprite("bullet1"),
       k.scale(2),
       k.anchor("center"),
@@ -198,29 +203,35 @@ const level1 = k.scene("level1", () => {
       k.area(),
       "1",
     ];
+
     k.play("shoot");
     bullet = k.add(bullet);
     bullet.angle = player1.pos.angle(player2.pos) + 180;
 
     bullet.onCollide("barrier", () => {
-      k.play('destroy')
+      let explosion = k.add([k.sprite("explosion"), k.pos(bullet.pos), k.scale(3)]);
+      explosion.play("explode");
+      k.play("destroy");
       k.destroy(bullet);
     });
+
     bullet.onCollide("player2", () => {
-      k.play('explode');
+      k.shake(5);
+      let explosion = k.add([k.sprite("explosion"), k.pos(bullet.pos), k.scale(3)]);
+      explosion.play("explode");
+      k.play("explode");
       player2.hurt(10);
       k.destroy(bullet);
     });
   });
 
   k.onKeyPress("e", () => {
-    //player 1 shoot
-    //
+    //player 2 shoot
     let bullet: any = [
       k.move(player2.pos.angle(player1.pos), -900),
-      k.pos(player2.pos),
-      k.sprite("bullet1"),
-      k.scale(2),
+      k.pos(player2.pos.x + 70, player2.pos.y + 20),
+      k.sprite("bullet2"),
+      k.scale(3),
       k.anchor("center"),
       k.z(100),
       k.offscreen({ destroy: true }),
@@ -232,11 +243,16 @@ const level1 = k.scene("level1", () => {
     bullet.angle = player2.pos.angle(player1.pos) + 180;
 
     bullet.onCollide("barrier", () => {
-      k.play('destroy')
+      k.play("destroy");
+      let explosion = k.add([k.sprite("explosion"), k.pos(bullet.pos), k.scale(3)]);
+      explosion.play("explode");
       k.destroy(bullet);
     });
     bullet.onCollide("player1", () => {
-      k.play('explode');
+      k.shake(5);
+      let explosion = k.add([k.sprite("explosion"), k.pos(bullet.pos), k.scale(3)]);
+      explosion.play("explode");
+      k.play("explode");
       player1.hurt(10);
       k.destroy(bullet);
     });
@@ -263,19 +279,19 @@ const level1 = k.scene("level1", () => {
   });
 
   player1.on("death", () => {
-    k.play('waaz')
+    k.play("waaz");
     scores.score2++;
     score2.text = `player2: ${scores.score2}`;
     player1.pos = initialPositions.player1;
-    player1.heal(100)
+    player1.heal(100);
   });
 
   player2.on("death", () => {
-    k.play('waaz')
+    k.play("waaz");
     scores.score1++;
     score1.text = `player1: ${scores.score1}`;
     player2.pos = initialPositions.player2;
-    player2.heal(100)
+    player2.heal(100);
   });
 
   handlePlayerMovement(player1, "4", {

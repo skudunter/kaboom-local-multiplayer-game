@@ -61,6 +61,19 @@ k.loadSprite("pillar2", "./pillar2.png");
 k.loadSprite("light", "./light.png");
 //bullets
 k.loadSprite("bullet1", "./bullet.png");
+k.loadSprite("bullet2", "./bullet2.png");
+//explosion
+k.loadSprite("explosion", "./explosion.png",{
+  sliceX:8,
+  anims:{
+   explode:{
+   from:0,
+   to:7,
+   speed:20,
+   loop:false
+   }
+  }
+});
 
 
 export default k;
