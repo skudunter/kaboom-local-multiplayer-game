@@ -75,6 +75,7 @@ const level1 = k.scene("level1", () => {
           k.area(),
           k.body({ isStatic: true }),
           "crate",
+          "barrier",
           k.z(80),
         ],
         p: () => [
@@ -83,6 +84,7 @@ const level1 = k.scene("level1", () => {
           k.scale(4.9),
           k.area(),
           k.body({ isStatic: true }),
+          "barrier",
         ],
         P: () => [
           k.sprite("crate2"),
@@ -90,10 +92,23 @@ const level1 = k.scene("level1", () => {
           k.scale(4.9),
           k.area(),
           k.body({ isStatic: true }),
+          "barrier",
         ],
       },
     }
   );
+  
+  k.play("gametrack");
+  let scores = { score1: 0, score2: 0 };
+  let score1 = k.add([
+    k.text(`player1: ${scores.score1}`),
+    k.pos(k.width() / 2 - 150, 20),
+  ]);
+  let score2 = k.add([
+    k.text(`player2: ${scores.score2}`),
+    k.pos(k.width() / 2 + 150, 20),
+  ]);
+
   //walls for collision purposes
   k.add([
     k.rect(k.width(), tileWidth),
@@ -102,6 +117,7 @@ const level1 = k.scene("level1", () => {
     k.body({ isStatic: true }),
     k.area(),
     k.z(-1),
+    "barrier",
   ]);
   k.add([
     k.rect(tileWidth, k.height() - tileHeight * 2 - 20),
@@ -110,6 +126,7 @@ const level1 = k.scene("level1", () => {
     k.body({ isStatic: true }),
     k.area(),
     k.z(-1),
+    "barrier",
   ]);
   k.add([
     k.rect(k.width(), tileHeight),
@@ -118,6 +135,7 @@ const level1 = k.scene("level1", () => {
     k.body({ isStatic: true }),
     k.area(),
     k.z(-1),
+    "barrier",
   ]);
   k.add([
     k.rect(tileWidth, k.height() - tileHeight * 2 - 20),
@@ -126,6 +144,7 @@ const level1 = k.scene("level1", () => {
     k.body({ isStatic: true }),
     k.area(),
     k.z(-1),
+    "barrier",
   ]);
 
   const player1 = level.get("player1")[0];
@@ -164,24 +183,80 @@ const level1 = k.scene("level1", () => {
 
   k.onKeyPress("7", () => {
     //player 1 shoot
-    //  
-    let bullet:any = [
-      k.move(player1.pos.angle(player2.pos), -500),
+    //
+    let bullet: any = [
+      k.move(player1.pos.angle(player2.pos), -700),
       k.pos(player1.pos),
       k.sprite("bullet1"),
-      k.scale(3),
+      k.scale(2),
+      k.anchor("center"),
       k.z(100),
-      k.offscreen({destroy:true})
+      k.offscreen({ destroy: true }),
+      k.area(),
+      "1",
     ];
     bullet = k.add(bullet);
-    bullet.angle = player1.pos.angle(player2.pos)+180;
+    bullet.angle = player1.pos.angle(player2.pos) + 180;
 
-    
+    bullet.onCollide("barrier", () => {
+      k.destroy(bullet);
+    });
+    bullet.onCollide("player2", () => {
+      player2.hurt(10);
+      k.destroy(bullet);
+    });
   });
 
   k.onKeyPress("e", () => {
-    //player 2 shoot
+    //player 1 shoot
+    //
+    let bullet: any = [
+      k.move(player2.pos.angle(player1.pos), -700),
+      k.pos(player2.pos),
+      k.sprite("bullet1"),
+      k.scale(2),
+      k.anchor("center"),
+      k.z(100),
+      k.offscreen({ destroy: true }),
+      k.area(),
+      "2",
+    ];
+
+    bullet = k.add(bullet);
+    bullet.angle = player2.pos.angle(player1.pos) + 180;
+
+    bullet.onCollide("barrier", () => {
+      k.destroy(bullet);
+    });
+    bullet.onCollide("player1", () => {
+      player1.hurt(10);
+      k.destroy(bullet);
+    });
   });
+
+  player2.on("hurt", () => {
+    k.destroy(player2Health);
+    player2Health = player2.add([
+      k.rect(k.lerp(0, tileWidth / 3, player2.hp() / 100), 3),
+      k.pos(0, -18),
+      k.anchor("center"),
+      k.color(119, 221, 119),
+    ]);
+  });
+
+  player1.on("hurt", () => {
+    k.destroy(player1Health);
+    player1Health = player1.add([
+      k.rect(k.lerp(0, tileWidth / 3, player1.hp() / 100), 3),
+      k.pos(0, -18),
+      k.anchor("center"),
+      k.color(119, 221, 119),
+    ]);
+  });
+
+  player1.on("death", () => {});
+
+  player2.on("death", () => {});
 
   handlePlayerMovement(player1, "4", {
     x: -1,

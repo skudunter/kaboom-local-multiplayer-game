@@ -39,7 +39,7 @@ k.loadSprite("robot2", "./robot2.png", {
     },
   },
 });
-
+k.loadSound('gametrack','./gametrack.mp3')
 //floors
 k.loadSprite("floor1", "./floor1.png");
 k.loadSprite("floor2", "./floor2.png");
