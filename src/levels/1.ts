@@ -203,6 +203,7 @@ const level1 = k.scene("level1", () => {
     bullet.angle = player1.pos.angle(player2.pos) + 180;
 
     bullet.onCollide("barrier", () => {
+      k.play('destroy')
       k.destroy(bullet);
     });
     bullet.onCollide("player2", () => {
@@ -231,6 +232,7 @@ const level1 = k.scene("level1", () => {
     bullet.angle = player2.pos.angle(player1.pos) + 180;
 
     bullet.onCollide("barrier", () => {
+      k.play('destroy')
       k.destroy(bullet);
     });
     bullet.onCollide("player1", () => {
@@ -261,6 +263,7 @@ const level1 = k.scene("level1", () => {
   });
 
   player1.on("death", () => {
+    k.play('waaz')
     scores.score2++;
     score2.text = `player2: ${scores.score2}`;
     player1.pos = initialPositions.player1;
@@ -268,6 +271,7 @@ const level1 = k.scene("level1", () => {
   });
 
   player2.on("death", () => {
+    k.play('waaz')
     scores.score1++;
     score1.text = `player1: ${scores.score1}`;
     player2.pos = initialPositions.player2;

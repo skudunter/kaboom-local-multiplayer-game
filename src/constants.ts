@@ -43,6 +43,7 @@ k.loadSound('gametrack','./gametrack.mp3')
 k.loadSound('shoot','./shoot.wav')
 k.loadSound('explode','./explode.wav')
 k.loadSound('destroy','./destroy.wav')
+k.loadSound('waaz','./waaz.wav')
 //floors
 k.loadSprite("floor1", "./floor1.png");
 k.loadSprite("floor2", "./floor2.png");
