@@ -1,13 +1,5 @@
 import k, { tileWidth, tileHeight } from "../constants";
 
-function handleHit(player: any) {
-//   let t = 0;
-  player.on("hurt", () => {
-    player.color = { r: 255, g: 255, b: 255 };
-    console.log("hurts");
-  });
-}
-
 // Function to handle player movement and animation
 function handlePlayerMovement(player: any, direction: any, anim: any) {
   k.onKeyDown(direction, () => {
@@ -36,11 +28,11 @@ const level1 = k.scene("level1", () => {
       "=                p      =",
       "=          cc    p      =",
       "=                p      =",
-      "=  p        p           =",
-      "=# p       c           @=",
-      "=  p        p           =",
-      "=                       =",
-      "=      pp               =",
+      "=  p        P           =",
+      "=# p                   @=",
+      "=  p        P   p       =",
+      "=               p       =",
+      "=      pp       p       =",
       "=       p               =",
       "=       p               =",
       "==========================",
@@ -56,11 +48,11 @@ const level1 = k.scene("level1", () => {
           k.area(),
           k.body(),
           k.anchor("center"),
-          "robot1",
+          "player1",
           { speed: 200 },
           k.scale(4),
           k.z(100),
-          k.health(10),
+          k.health(100),
         ],
         "#": () => [
           k.sprite("robot2"),
@@ -68,55 +60,145 @@ const level1 = k.scene("level1", () => {
           k.body(),
           k.scale(4),
           k.anchor("center"),
-          "robot2",
+          "player2",
           { speed: 200 },
           k.z(100),
-          k.health(10),
+          k.health(100),
         ],
         " ": () => [k.sprite("floor3"), k.anchor("center"), k.scale(5.1)],
-        "b": () => [k.sprite("floor1"), k.anchor("center"), k.scale(5.1)],
-        "f": () => [k.sprite("floor2"), k.anchor("center"), k.scale(5.1)],
-        "c": () => [k.sprite("crate1"), k.anchor("center"), k.scale(5.1),k.body({mass:10}),k.area(),k.z(100)],
-        "p": () => [k.sprite("pillar1"), k.anchor("center"), k.scale(5.1),k.body({isStatic:true}),k.area(),k.z(100)],
+        b: () => [k.sprite("floor1"), k.anchor("center"), k.scale(5.1)],
+        f: () => [k.sprite("floor2"), k.anchor("center"), k.scale(5.1)],
+        c: () => [
+          k.sprite("crate1"),
+          k.anchor("center"),
+          k.scale(5.1),
+          k.area(),
+          k.body({ isStatic: true }),
+          "crate",
+          k.z(80),
+        ],
+        p: () => [
+          k.sprite("pillar1"),
+          k.anchor("center"),
+          k.scale(4.9),
+          k.area(),
+          k.body({ isStatic: true }),
+        ],
+        P: () => [
+          k.sprite("crate2"),
+          k.anchor("center"),
+          k.scale(4.9),
+          k.area(),
+          k.body({ isStatic: true }),
+        ],
       },
     }
   );
   //walls for collision purposes
-  k.add([k.rect(k.width(), tileWidth), k.pos(0, 0), k.color(0, 0, 0),k.body({isStatic:true}),k.area(),k.z(-1)]);
-  k.add([k.rect(tileWidth,k.height()-tileHeight*2-20), k.pos(0, tileHeight+1), k.color(0, 0, 0),k.body({isStatic:true}),k.area(),k.z(-1)]);
-  k.add([k.rect(k.width(), tileHeight), k.pos(0, k.height()-tileHeight-16), k.color(0, 0, 0),k.body({isStatic:true}),k.area(),k.z(-1)]);
-  k.add([k.rect(tileWidth,k.height()-tileHeight*2-20), k.pos(k.width()-tileWidth, tileHeight+1), k.color(0, 0, 0),k.body({isStatic:true}),k.area(),k.z(-1)]);
+  k.add([
+    k.rect(k.width(), tileWidth),
+    k.pos(0, 0),
+    k.color(0, 0, 0),
+    k.body({ isStatic: true }),
+    k.area(),
+    k.z(-1),
+  ]);
+  k.add([
+    k.rect(tileWidth, k.height() - tileHeight * 2 - 20),
+    k.pos(0, tileHeight + 1),
+    k.color(0, 0, 0),
+    k.body({ isStatic: true }),
+    k.area(),
+    k.z(-1),
+  ]);
+  k.add([
+    k.rect(k.width(), tileHeight),
+    k.pos(0, k.height() - tileHeight - 16),
+    k.color(0, 0, 0),
+    k.body({ isStatic: true }),
+    k.area(),
+    k.z(-1),
+  ]);
+  k.add([
+    k.rect(tileWidth, k.height() - tileHeight * 2 - 20),
+    k.pos(k.width() - tileWidth, tileHeight + 1),
+    k.color(0, 0, 0),
+    k.body({ isStatic: true }),
+    k.area(),
+    k.z(-1),
+  ]);
 
-  const player1 = level.get("robot1")[0];
-  const player2 = level.get("robot2")[0];
- 
-  k.add([k.sprite('light'),k.pos(player1.pos.x,player1.pos.y),k.scale(5.1),k.z(-1)])
-  k.add([k.sprite('light'),k.pos(player2.pos.x,player2.pos.y),k.scale(5.1),k.z(-1)])
+  const player1 = level.get("player1")[0];
+  const player2 = level.get("player2")[0];
+
+  let player1Health = player1.add([
+    k.rect(k.lerp(0, tileWidth / 3, player1.hp() / 100), 3),
+    k.pos(0, -18),
+    k.anchor("center"),
+    k.color(119, 221, 119),
+  ]);
+
+  let player2Health = player2.add([
+    k.rect(k.lerp(0, tileWidth / 3, player2.hp() / 100), 3),
+    k.pos(0, -18),
+    k.anchor("center"),
+    k.color(119, 221, 119),
+  ]);
+
+  k.add([
+    k.sprite("light"),
+    k.pos(player1.pos.x, player1.pos.y),
+    k.scale(5.1),
+    k.z(-1),
+  ]);
+
+  k.add([
+    k.sprite("light"),
+    k.pos(player2.pos.x, player2.pos.y),
+    k.scale(5.1),
+    k.z(-1),
+  ]);
 
   handlePlayerIdleAnimation(player1);
   handlePlayerIdleAnimation(player2);
 
-  handleHit(player1);
-  handleHit(player2);
+  k.onKeyPress("7", () => {
+    //player 1 shoot
+    //  
+    let bullet:any = [
+      k.move(player1.pos.angle(player2.pos), -500),
+      k.pos(player1.pos),
+      k.sprite("bullet1"),
+      k.scale(3),
+      k.z(100),
+      k.offscreen({destroy:true})
+    ];
+    bullet = k.add(bullet);
+    bullet.angle = player1.pos.angle(player2.pos)+180;
 
-  player2.hurt(3);
+    
+  });
 
-  handlePlayerMovement(player1, "left", {
+  k.onKeyPress("e", () => {
+    //player 2 shoot
+  });
+
+  handlePlayerMovement(player1, "4", {
     x: -1,
     y: 0,
     flipX: true,
   });
-  handlePlayerMovement(player1, "right", {
+  handlePlayerMovement(player1, "6", {
     x: 1,
     y: 0,
     flipX: false,
   });
-  handlePlayerMovement(player1, "up", {
+  handlePlayerMovement(player1, "8", {
     x: 0,
     y: -1,
     flipX: false,
   });
-  handlePlayerMovement(player1, "down", {
+  handlePlayerMovement(player1, "5", {
     x: 0,
     y: 1,
     flipX: false,

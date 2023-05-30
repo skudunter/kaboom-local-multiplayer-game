@@ -1,7 +1,7 @@
 import kaboom from "kaboom";
 //init kaboom
 const k = kaboom();
-const tileWidth = k.width() / 25;
+const tileWidth = (k.width() / 25);
 const tileHeight = tileWidth;
 
 //load sprites
@@ -55,6 +55,8 @@ k.loadSprite("pillar1", "./pillar1.png");
 k.loadSprite("pillar2", "./pillar2.png");
 //light
 k.loadSprite("light", "./light.png");
+//bullets
+k.loadSprite("bullet1", "./bullet.png");
 
 
 export default k;
