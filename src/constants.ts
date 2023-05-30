@@ -40,6 +40,9 @@ k.loadSprite("robot2", "./robot2.png", {
   },
 });
 k.loadSound('gametrack','./gametrack.mp3')
+k.loadSound('shoot','./shoot.wav')
+k.loadSound('explode','./explode.wav')
+k.loadSound('destroy','./destroy.wav')
 //floors
 k.loadSprite("floor1", "./floor1.png");
 k.loadSprite("floor2", "./floor2.png");
